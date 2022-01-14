@@ -39,7 +39,7 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
         graph = Graph(neo4j_server, auth=(neo4j_user, neo4j_password))
         result = graph.run("MATCH (n:Name) WHERE n.birthYear=1960 RETURN COUNT (*)")
         
-        dataString += f"CYPHER: count={result}\n"
+        #dataString += f"CYPHER: count={result}\n"
 
 
     except:
