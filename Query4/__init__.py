@@ -39,7 +39,7 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
         graph = Graph(neo4j_server, auth=(neo4j_user, neo4j_password))
         artistes = graph.run("MATCH(n:Name)-[r]->(t:Title) WITH n,t, COUNT(DISTINCT type(r)) as resp WHERE resp >1 RETURN n.primaryName, t.primaryTitle,  resp")
         for artiste in artistes:
-            dataString += f"CYPHER: Primary Name={artiste['n.primaryName']}, Primary Title={artiste['t.primaryTitle']}, Nombre de responsabilités={artiste['resp']\n"
+            dataString += f"CYPHER: Primary Name={artiste['n.primaryName']}, Primary Title={artiste['t.primaryTitle']}, Nombre de responsabilités={artiste['resp']}\n"
 
         
     except:
