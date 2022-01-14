@@ -47,7 +47,7 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
                     dataString += f"SQL: Genre={row[0]}, Average Time={row[1]}\n"
                     
                 #Second SQL Query
-                dataString += "\n\n\nDurée moyenne des films dans lesquels chaque acteur a joué\n\n"
+                """dataString += "\n\n\nDurée moyenne des films dans lesquels chaque acteur a joué\n\n"
                 cursor.execute("SELECT primaryName, SUM(runtimeMinutes)/COUNT(DISTINCT t.tconst) AS avg_time FROM [dbo].[tTitles] as T, [dbo].[tPrincipals] as P, [dbo].[tNames] as N WHERE T.tconst = P.tconst AND P.nconst = N.nconst AND P.category = 'acted in' GROUP BY primaryName ORDER BY avg_time")
 
                 rows = cursor.fetchall()
@@ -60,10 +60,10 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
 
                 rows = cursor.fetchall()
                 for row in rows:
-                    dataString += f"SQL: Primary Name={row[0]}, Average Time={row[1]}\n"
+                    dataString += f"SQL: Primary Name={row[0]}, Average Time={row[1]}\n"""
 
-        except:
-            errorMessage = "Erreur de connexion a la base SQL"
+    except:
+        errorMessage = "Erreur de connexion a la base SQL"
         
     
     if name:
