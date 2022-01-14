@@ -33,7 +33,7 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
         return func.HttpResponse("Au moins une des variables d'environnement n'a pas été initialisée.", status_code=500)
         
     errorMessage = ""
-    dataString = "Numbre of artists born in 1960"
+    dataString = "Number of artists born in 1960\n"
     try:
         logging.info("Test de connexion avec py2neo...")
         graph = Graph(neo4j_server, auth=(neo4j_user, neo4j_password))
