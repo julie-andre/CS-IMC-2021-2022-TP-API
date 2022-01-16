@@ -21,8 +21,8 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
         else:
             name = req_body.get('name')
             
-    if not choice or choice.lower() not in ["group","actor","director"]:
-        choice = "group"
+    if not choice or choice not in ["genre","actor","director"]:
+        choice = "genre"
         flag = False
     
     server = os.environ["TPBDD_SERVER"]
@@ -39,7 +39,7 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
         return func.HttpResponse("Au moins une des variables d'environnement n'a pas été initialisée.", status_code=500)
         
     errorMessage = ""
-    dataString = "Durée moyenne des films selon le genre\n\n"
+    dataString = ""
     try:
             logging.info("Test de connexion avec pyodbc...")
             with pyodbc.connect('DRIVER='+driver+';SERVER=tcp:'+server+';PORT=1433;DATABASE='+database+';UID='+username+';PWD='+ password) as conn:
@@ -48,8 +48,9 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
                 # On hardcode 3 requêtes non paramétrées afin d'éviter les injections SQL
                 # Remarque : on pourrait aussi utiliser un framework de préparateur de requêtes (puisque les 2 dernières requêtes se ressemblent)
                 # Mais ici le gain en lignes de codes en utulisant cette méthode serait négligeable
-                if(choice == "group"):
+                if(choice == "genre"):
                     # First SQL Query 
+                    dataString += "Durée moyenne des films selon le genre\n\n"
                     cursor.execute("SELECT genre, SUM(runtimeMinutes)/COUNT(*) AS avg_time FROM [dbo].[tTitles] as T, [dbo].[tGenres] as G WHERE T.tconst = G.tconst GROUP BY genre ORDER BY avg_time")
 
                     rows = cursor.fetchall()
@@ -80,15 +81,15 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
     
     if flag is False:
         nameMessage = "\nAucune critère n'a été passé en paramètre, ou alors un critère invalide a été passé en paramètre\n"
-        nameMessage += "Le parametre 'group' a été considéré par défaut pour cette requête\n"
+        nameMessage += "Le parametre 'genre' a été considéré par défaut pour cette requête\n"
     else:
-        nameMessage += f"Les résultats ont été obtenus avec le critère {choice}\n"
+        nameMessage = f"\nLes résultats ont été obtenus avec le critère {choice}\n"
     
-    nameMessage += "Si vous souhaitez avoir les résultats de la requête selon : \n - le critère groupe, ajoutez '&choice=group' à l'url\n- le critère acteur, ajoutez '&choice=actor' à l'url\n - le critère directeur, ajoutez '&choice=director' à l'url\n"
+    nameMessage += "\nSi vous souhaitez avoir les résultats de la requête selon : \n - le critère genre, ajoutez '&choice=genre' à l'url\n - le critère acteur, ajoutez '&choice=actor' à l'url\n - le critère directeur, ajoutez '&choice=director' à l'url\n"
     if name:
-        nameMessage += f"Hello, {name}!\n"
+        nameMessage += f"\nHello, {name}!\n"
     else:
-        nameMessage += "Le parametre 'name' n'a pas ete fourni lors de l'appel.\n"
+        nameMessage += "\nLe parametre 'name' n'a pas été fourni lors de l'appel.\n"
     
     if errorMessage != "":
         return func.HttpResponse(dataString + nameMessage + errorMessage, status_code=500)
