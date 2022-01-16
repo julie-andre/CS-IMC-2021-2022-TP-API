@@ -80,7 +80,7 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
         
     
     if flag is False:
-        nameMessage = "\nAucune critère n'a été passé en paramètre, ou alors un critère invalide a été passé en paramètre\n"
+        nameMessage = "\nAucun critère n'a été passé en paramètre, ou alors un critère invalide a été passé en paramètre\n"
         nameMessage += "Le parametre 'genre' a été considéré par défaut pour cette requête\n"
     else:
         nameMessage = f"\nLes résultats ont été obtenus avec le critère {choice}\n"
