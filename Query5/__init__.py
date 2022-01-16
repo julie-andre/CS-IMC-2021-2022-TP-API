@@ -78,7 +78,7 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
         errorMessage = "Erreur de connexion a la base SQL"
         
     
-    if (!flag):
+    if flag is False:
         nameMessage = "\nAucune critère n'a été passé en paramètre, ou alors un critère invalide a été passé en paramètre\n"
         nameMessage += "Le parametre 'group' a été considéré par défaut pour cette requête\n"
     else:
